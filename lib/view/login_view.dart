@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:mvvm_flutter/res/colors.dart';
 import 'package:mvvm_flutter/res/components/round_button.dart';
 import 'package:mvvm_flutter/utils/routes/routes_name.dart';
+import 'package:mvvm_flutter/view_model/auth_view_model.dart';
+import 'package:provider/provider.dart';
 
 import '../utils/utils.dart';
 class LoginView extends StatefulWidget {
@@ -30,6 +32,7 @@ class _LoginViewState extends State<LoginView> {
   }
   @override
   Widget build(BuildContext context) {
+    final authViewModel=Provider.of<AuthViewModel>(context);
     final height=MediaQuery.of(context).size.height*1;
     final width=MediaQuery.of(context).size.width*1;
     return Scaffold(
@@ -80,7 +83,9 @@ class _LoginViewState extends State<LoginView> {
                     );
                   }),
               SizedBox(height: height*.1,),
-              RoundButton(title: 'Login', onPress: (){
+              RoundButton(title: 'Login',
+                  loading: authViewModel.loading,
+                  onPress: (){
                 if(emailController.text.isEmpty){
                   Utils.flushBarErrorMessage('Please enter email', context);
                 }else if (passwordController.text.isEmpty){
@@ -89,7 +94,12 @@ class _LoginViewState extends State<LoginView> {
                 }else if(passwordController.text.length<6){
                   Utils.flushBarErrorMessage('Password should be at-least 6 characters', context);
                 }else{
-                  print('api hit');
+                  Map data={
+                    'email':emailController.text.toString(),
+                    'password':passwordController.text.toString(),
+
+                  };
+                  authViewModel.loginApi(data, context);
                 }
               }),
 
