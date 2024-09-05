@@ -102,6 +102,14 @@ class _LoginViewState extends State<LoginView> {
                   authViewModel.loginApi(data, context);
                 }
               }),
+              SizedBox(height: height*.03,),
+              InkWell(
+                onTap: (){
+                  Navigator.pushNamed(context, RoutesName.signup);
+                },
+                  child: const Text('Dont have an account? SignUp')),
+
+
 
 
             ],
